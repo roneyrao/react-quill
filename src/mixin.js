@@ -1,7 +1,7 @@
 'use strict';
+import Uploader, {registerImgPlugin} from './uploader';
 
 var Quill = require('quill');
-
 var QuillMixin = {
 
 	/**
@@ -9,7 +9,9 @@ var QuillMixin = {
 	be passed the configuration, have its events bound,
 	*/
 	createEditor: function($el, config) {
+		registerImgPlugin(config); //roney
 		var editor = new Quill($el, config);
+		this.uploader=new Uploader(editor, config); //roney
 		this.hookEditor(editor);
 		return editor;
 	},
@@ -44,6 +46,8 @@ var QuillMixin = {
 
 		editor.on('text-change', this.handleTextChange);
 		editor.on('selection-change', this.handleSelectionChange);
+		//roney
+		editor.getModule('toolbar').addHandler('image', this.uploader.imgHandler);
 	},
 
 	unhookEditor: function(editor) {

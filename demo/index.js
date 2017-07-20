@@ -1,10 +1,7 @@
-/* global React */
-/* global ReactQuill */
-'use strict';
-
-if (typeof React !== 'object') alert('React not found. Did you run "npm install"?');
-if (typeof ReactQuill !== 'function') alert('ReactQuill not found. Did you run "make build"?')
-
+const React=require('./react-with-addons');
+const ReactDOM=require('./react-dom');
+let ReactQuill=require('./react-quill');
+ 
 var Editor = React.createClass({
 
 	getInitialState: function() {
@@ -67,6 +64,29 @@ var Editor = React.createClass({
 				this.state.enabled && ReactQuill({
 					theme: this.state.theme,
 					value: this.state.value,
+					modules: {
+							toolbar: [
+								[{ font: [] }, { size: [] }],
+								[{ align: [] }, 'direction' ],
+								[ 'bold', 'italic', 'underline', 'strike' ],
+								[{ color: [] }, { background: [] }],
+								[{ script: 'super' }, { script: 'sub' }],
+								['blockquote', 'code-block' ],
+								[{ list: 'ordered' }, { list: 'bullet'}, { indent: '-1' }, { indent: '+1' }],
+								[ 'link', 'image', 'video' ],
+								[ 'clean' ]
+							],
+							imageResize:{},
+							imageDrop:true
+					},
+					imgUpload:{
+						path:'upload',
+						maxWidth:300,
+						maxHeight:300,
+						minWidth:100,
+						minHeight:100,
+						multiple:true
+					},
 					readOnly: this.state.readOnly,
 					onChange: this.onEditorChange,
 					onChangeSelection: this.onEditorChangeSelection

@@ -3,9 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
 
-	entry: './src/index.js',
-
-	debug: true,
+	entry: ['babel-polyfill', './src/index.js'],
 	devtool: 'module-source-map',
 
 	output: {
@@ -18,7 +16,29 @@ module.exports = {
 	module: {
 		// Shut off warnings about using pre-built javascript files
 		// as Quill.js unfortunately ships one as its `main`.
-		noParse: /node_modules\/quill\/dist/
+		noParse: /node_modules\/quill\/dist/,
+		rules:[
+			{
+				test:/\.js$/
+				,use:[{
+					loader:'babel-loader'
+					,options:{
+						"presets": [
+						  "latest",
+						  "react"
+						],
+						"plugins": [
+						  "transform-object-rest-spread",
+						  "babel-plugin-transform-class-properties"
+						]
+					}
+				}]
+			},
+			{
+				test:/\.css$/
+				,use:['style-loader', 'css-loader']
+			}
+		]
 	},
 
 	externals: {
