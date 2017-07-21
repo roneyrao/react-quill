@@ -1,6 +1,7 @@
-const React=require('./react-with-addons');
-const ReactDOM=require('./react-dom');
-let ReactQuill=require('./react-quill');
+require('../node_modules/quill/dist/quill.snow.css')
+const React=require('../node_modules/react/dist/react-with-addons.js');
+const ReactDOM=require('../node_modules/react-dom/dist/react-dom.js');
+let ReactQuill=require('../src');
  
 var Editor = React.createClass({
 

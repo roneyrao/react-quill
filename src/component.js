@@ -247,6 +247,7 @@ var QuillComponent = React.createClass({
 	},
 
 	getEditorConfig: function() {
+		return this.props;
 		return {
 			bounds:       this.props.bounds,
 			formats:      this.props.formats,

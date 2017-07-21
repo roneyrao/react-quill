@@ -37,7 +37,9 @@ module.exports=function(req, res){
 				let urls=files.map(function(f){
 					return `${uploadDir}${path.basename(f.path)}`;
 				});
-				res.end(JSON.stringify({"urls":urls, "isSuccess":true}));
+				setTimeout(function(){
+					res.end(JSON.stringify({"urls":urls, "isSuccess":true}));
+				}, 3000);
 			}
 		});
 		return true;

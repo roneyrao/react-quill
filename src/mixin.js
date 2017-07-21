@@ -46,8 +46,6 @@ var QuillMixin = {
 
 		editor.on('text-change', this.handleTextChange);
 		editor.on('selection-change', this.handleSelectionChange);
-		//roney
-		editor.getModule('toolbar').addHandler('image', this.uploader.imgHandler);
 	},
 
 	unhookEditor: function(editor) {

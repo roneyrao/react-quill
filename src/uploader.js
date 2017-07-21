@@ -22,19 +22,21 @@ class Progress{
 		this.uploader=uploader;
 
 		this.box = document.createElement('div');
-		this.box.classList.add('ql-upload-prog');
+		this.box.classList.add('ql-upload-prog')
+		this.box.classList.add('ql-'+uploader.theme);
 		let txtbox= document.createElement('div');
 		txtbox.classList.add('ql-upload-prog-txtbox');
 		txtbox.classList.add('ql-tooltip');
 		this.box.appendChild(txtbox);
-		this.txt = document.createElement('div');
+		this.txt = document.createElement('span');
 		txtbox.appendChild(this.txt);
-		this.btn = document.createElement('button');
+		this.btn = document.createElement('a');
+		this.btn.classList.add('ql-action');
 		txtbox.appendChild(this.btn);
 		this.btn.addEventListener('click', this.cancel.bind(this));
 
 		this.hide();
-		this.uploader.quill.container.appendChild(this.box);
+		this.uploader.quill.getModule('toolbar').container.parentNode.appendChild(this.box);
 	}
 	hide(){
 		this.box.style.display='none';
@@ -55,6 +57,7 @@ export default class Uploader{
 	constructor(quill, cfg){
 		if(!cfg)return;
 		this.quill=quill;
+		this.theme=cfg.theme;
 		this.cfg=cfg.imgUpload;
 		if(!this.cfg||!this.cfg.path)return;
 		//imgUpload:{
@@ -88,7 +91,7 @@ export default class Uploader{
 		if(!(this.cfg.width|| this.cfg.height|| this.cfg.maxWidth|| this.cfg.maxHeight|| this.cfg.minWidth|| this.cfg.minHeight)){
 			this.checkPic=this.uploadImg;
 		}
-		this.imgHandler=this.imgHandler.bind(this);
+		quill.getModule('toolbar').addHandler('image', this.imgHandler.bind(this));
 	}
 	showError(msg){
 		alert(msg);
@@ -167,29 +170,29 @@ export default class Uploader{
 	}
 	checkPic(ix){
 		if(!this.files[ix])return this.uploadImg(); //all files are passed;
-		var r=new FileReader();
+		var r=new FileReader(), f=this.files[ix];
 		r.onload=()=>{
 			var img=new Image();
 			img.onload=()=>{
 				if(this.cfg.width && this.cfg.width!=img.width){
-					this.showError(`图片${img.name}宽度必须为${this.cfg.width}像素`);
+					this.showError(`图片"${f.name}"宽度必须为${this.cfg.width}像素`);
 				}else if(this.cfg.height && this.cfg.height!=img.height){
-					this.showError(`图片${img.name}高度必须为${this.cfg.height}像素`);
+					this.showError(`图片"${f.name}"高度必须为${this.cfg.height}像素`);
 				}else if(this.cfg.maxWidth && this.cfg.maxWidth<img.width){
-					this.showError(`图片${img.name}宽度不能超过${this.cfg.maxWidth}像素`);
+					this.showError(`图片"${f.name}"宽度不能超过${this.cfg.maxWidth}像素`);
 				}else if(this.cfg.maxHeight && this.cfg.maxHeight<img.height){
-					this.showError(`图片${img.name}高度不能超过${this.cfg.maxHeight}像素`);
+					this.showError(`图片"${f.name}"高度不能超过${this.cfg.maxHeight}像素`);
 				}else if(this.cfg.minWidth && this.cfg.minWidth>img.width){
-					this.showError(`图片${img.name}宽度不能少于${this.cfg.minWidth}像素`);
+					this.showError(`图片"${f.name}"宽度不能少于${this.cfg.minWidth}像素`);
 				}else if(this.cfg.minHeight && this.cfg.minHeight>img.height){
-					this.showError(`图片${img.name}高度不能少于${this.cfg.minHeight}像素`);
+					this.showError(`图片"${f.name}"高度不能少于${this.cfg.minHeight}像素`);
 				}else{
 					this.checkPic(ix+1);
 				}
 			};
 			img.src=r.result;
 		};
-		r.readAsDataURL(this.files[ix]);
+		r.readAsDataURL(f);
 	}
 	uploadImg(){
 		this.progress=new Progress(this);
