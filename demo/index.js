@@ -82,10 +82,10 @@ var Editor = React.createClass({
 					},
 					imgUpload:{
 						path:'upload',
-						maxWidth:300,
-						maxHeight:300,
-						minWidth:100,
-						minHeight:100,
+						maxWidth:1300,
+						maxHeight:1300,
+						minWidth:10,
+						minHeight:10,
 						multiple:true
 					},
 					readOnly: this.state.readOnly,

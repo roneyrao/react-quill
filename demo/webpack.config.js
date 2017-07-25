@@ -35,7 +35,7 @@ module.exports = {
 	},
 	plugins:[
 		new webpack.ProvidePlugin({
-			'window.Quill': 'QUILL'
+			'window.Quill': 'quill'
 		})
 	]
 };

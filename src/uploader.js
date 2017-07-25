@@ -1,7 +1,7 @@
 'use strict';
 
 import Delta from 'quill-delta';
-import Emitter from '../node_modules/quill/core/emitter';
+import Emitter from 'quill/core/emitter';
 require('./ql-upload.css');
 
 var Quill = require('quill');
@@ -94,7 +94,7 @@ export default class Uploader{
 		quill.getModule('toolbar').addHandler('image', this.imgHandler.bind(this));
 	}
 	showError(msg){
-		alert(msg);
+		alert(msg||'抱歉，出错了');
 	}
 	calcSize(str){
 		if(!str)return null;
@@ -102,7 +102,7 @@ export default class Uploader{
 		if(isNaN(num))return null;
 		var unit=str[num.toString().length];
 		var size;
-		if(unit && this.units[unit]){
+		if(unit && (unit=unit.toUpperCase()) && this.units[unit]){
 			size=this.units[unit] * num;
 		}
 		if(!size){
@@ -197,11 +197,11 @@ export default class Uploader{
 	uploadImg(){
 		this.progress=new Progress(this);
 		var xhr=new XMLHttpRequest();
-		var onError=(msg)=>{
-			this.showError(msg||xhr.statusText);
+		var onError=(err)=>{
+			this.showError((err&&err.message)||xhr.statusText);
 		};
 		xhr.onerror=onError;
-		xhr.onload=function(){
+		xhr.onload=()=>{
 			this.uploading=false;
 			this.progress.hide();
 			if(xhr.readyState === 4 && xhr.status === 200){
@@ -211,7 +211,7 @@ export default class Uploader{
 						obj=JSON.parse(xhr.responseText);
 					}catch(e){
 						console.error(xhr.responseText);
-						onError(`${e.message}, ${xhr.responseText}`);
+						this.showError(`${e.message}, ${xhr.responseText}`);
 					}
 					if(obj){ //{urls:[''], isSuccess:true, message:''}
 						if(obj.isSuccess){
@@ -219,7 +219,7 @@ export default class Uploader{
 								this.insertImg(el);
 							})
 						}else{
-							onError(obj.message);
+							this.showError(obj.message);
 						}
 					}
 				}else{
@@ -228,14 +228,14 @@ export default class Uploader{
 			}else{
 				onError();
 			}
-		}.bind(this);
+		};
 		xhr.upload.onprogress=function(e){
 			if(e.lengthComputable){
 				//this.domSign.html(Math.round((e.loaded*100)/e.total)+'%');
 				this.progress.update(Math.round((e.loaded*100)/e.total)+'%');
 			}
 		}.bind(this);
-		xhr.upload.onerror=function(e){onError(e.message)};
+		xhr.upload.onerror=onError;
 
 		this.abort=function(){
 			if(xhr.readyState<xhr.DONE){xhr.abort();}
