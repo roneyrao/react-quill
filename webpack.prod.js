@@ -5,7 +5,7 @@ module.exports = {
 
 	entry: './src/index.js',
 
-	debug: false,
+	//debug: false,
 	devtool: 'module-source-map',
 
 	output: {
@@ -18,6 +18,28 @@ module.exports = {
 		// Shut off warnings about using pre-built javascript files
 		// as Quill.js unfortunately ships one as its `main`.
 		noParse: /node_modules\/quill\/dist/
+		,rules:[
+			{
+				test:/\.js$/
+				,use:[{
+					loader:'babel-loader'
+					,options:{
+						"presets": [
+						  "latest",
+						  "react"
+						],
+						"plugins": [
+						  "transform-object-rest-spread",
+						  "babel-plugin-transform-class-properties"
+						]
+					}
+				}]
+			},
+			{
+				test:/\.css$/
+				,use:['style-loader', 'css-loader']
+			}
+		]
 	},
 
 	externals: {
@@ -43,7 +65,7 @@ module.exports = {
 
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(),
-		new webpack.optimize.OccurenceOrderPlugin()
+		//new webpack.optimize.OccurenceOrderPlugin()
 	]
 
 };

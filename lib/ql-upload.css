@@ -1,0 +1,26 @@
+.quill{
+	position:relative;
+}
+.ql-upload-prog{
+	position:absolute;
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	background:rgba(80, 80, 80, .4);
+	z-index:999;
+}
+.ql-upload-prog-txtbox{
+	margin-top: 50%;
+    position: relative !important;
+    display: inline-block;
+}
+.ql-upload-prog-txtbox:before{
+	content:'已上传：' !important;
+}
+.ql-upload-prog-txtbox a:after{
+	content:'取消' !important;
+}
