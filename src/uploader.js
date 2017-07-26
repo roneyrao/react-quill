@@ -274,7 +274,7 @@ export default class Uploader{
 		this.quill.updateContents(new Delta()
 				.retain(range.index)
 				.delete(range.length)
-				.insert({ image: src })
+				.insert({ image: (this.cfg.pfx||'')+src })
 				, Emitter.sources.USER);
 	}
 }

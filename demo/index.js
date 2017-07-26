@@ -1,7 +1,7 @@
 require('../node_modules/quill/dist/quill.snow.css')
 const React=require('../node_modules/react/dist/react-with-addons.js');
 const ReactDOM=require('../node_modules/react-dom/dist/react-dom.js');
-let ReactQuill=require('../src');
+let ReactQuill=require('../src/');
  
 var Editor = React.createClass({
 
@@ -82,6 +82,7 @@ var Editor = React.createClass({
 					},
 					imgUpload:{
 						path:'upload',
+						pfx:'abc/',
 						maxWidth:1300,
 						maxHeight:1300,
 						minWidth:10,

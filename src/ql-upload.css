@@ -9,11 +9,15 @@
 	left:0;
 	background:rgba(80, 80, 80, .4);
 	z-index:999;
+	text-align:center;
+	display: table-cell;
+    text-align: center;
 }
 .ql-upload-prog-txtbox{
 	top: 50%;
 	margin-top: -1em;
-	text-align:center;
+	position: relative !important;
+    display: inline-block;
 }
 .ql-upload-prog-txtbox:before{
 	content:'已上传：' !important;
@@ -21,3 +25,4 @@
 .ql-upload-prog-txtbox a:after{
 	content:'取消' !important;
 }
+input.ql-image[type=file]{display:none;}
